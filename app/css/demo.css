@@ -34,6 +34,29 @@ html, body {
     border-top: 1px solid black; 
 }
 
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+    
+.row.content {height: 450px}
+    
+    
+
+    
+@media screen and (max-width: 767px) {
+    .sidenav {
+    height: auto;
+    padding: 15px;
+    }
+    .row.content {height:auto;} 
+}
+
+
+text{
+font-size:12px;
+}
 .mainBars rect{
   shape-rendering: auto;
   fill-opacity: 0;
@@ -48,20 +71,10 @@ html, body {
 	stroke:none;
 	fill-opacity:0.5;
 }
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    
-    .row.content {height: 450px}
-    
-    
-
-    
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height:auto;} 
-    }
+.header{
+	text-anchor:middle;
+	font-size:16px;
+}
+line{
+	stroke:grey;
+}
