@@ -2,7 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .demoContainer {
@@ -33,3 +33,35 @@ html, body {
 .demoResponseList li + li {
     border-top: 1px solid black; 
 }
+
+.mainBars rect{
+  shape-rendering: auto;
+  fill-opacity: 0;
+  stroke-width: 0.5px;
+  stroke: rgb(0, 0, 0);
+  stroke-opacity: 0;
+}
+.subBars{
+	shape-rendering:crispEdges;
+}
+.edges{
+	stroke:none;
+	fill-opacity:0.5;
+}
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    .row.content {height: 450px}
+    
+    
+
+    
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
