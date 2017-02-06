@@ -54,9 +54,7 @@ html, body {
 }
 
 
-svg{
-    margin-top: -300;
-}
+
 text{
 font-size:12px;
 }
@@ -154,4 +152,14 @@ circle {
 .para{
     padding-left: 1% !important;
     padding-right: 1% !important;
+}
+em {font-weight:bold; font-style:normal;font-size: 20px}
+.dropdown-menu{
+    text-align: center !important;
+    float:center !important;
+}
+#bipartHeading{
+    text-align: center !important;
+    float:center !important;
+    font-weight:bold; font-style:normal;font-size: 20px
 }

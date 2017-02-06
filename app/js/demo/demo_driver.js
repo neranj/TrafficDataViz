@@ -51,13 +51,14 @@
         $container.append($newEntry);
     }
 
-    var $trafficStatusList = $("#mockTrafficStat"),
-        df2 = new DataFetcher(function () {
-             return "/traffic_status/frozen";
+    var $trafficStatusList = $("#mockTrafficStat");
+    function urlCall(url) {
+        return new DataFetcher(function () {
+            return "/traffic_status/frozen";
             //return "/traffic_status";
-            //codingArea
         });
-
+    }
+    df2 = urlCall("/traffic_status");
 
     function triggerGraphs(data, sorceType) {
         var resul = data["result"];
@@ -72,8 +73,6 @@
         var packetMax = inputData[0]["packets"];
 
         for (var i = 0; i < inputData.length; i++) {
-
-
             trafficArray.push(inputData[i]["traffic"]);
             packetArray.push(inputData[i]["packets"]);
             trafficAndPacketArray.push([inputData[i]["traffic"], inputData[i]["packets"]]);
@@ -91,7 +90,7 @@
             }
         }
 
-        function getObjByType(inputDataForType,selectType,selectObj){
+        function getObjByType(inputDataForType, selectType, selectObj) {
             var typeSet = {};
             for (var i = 0; i < inputDataForType.length; i++) {
 
@@ -99,32 +98,25 @@
                     if (inputDataForType[i][selectType] === undefined) {
                         inputDataForType[i][selectType] = "TypeNotDefined";
                     }
-                    //typeSet[inputDataForBarGraph[i][selectType]] = [inputDataForBarGraph[i]["srcObj"],inputDataForBarGraph[i]["destObj"],inputDataForBarGraph[i]["srcType"],inputDataForBarGraph[i]["destType"],inputDataForBarGraph[i]["traffic"],inputDataForBarGraph[i]["packets"]];
                     typeSet[inputDataForType[i][selectType]] = [inputDataForType[i][selectObj]];
                 }
                 else {
-                    if(!(inputDataForType[i][selectObj] in typeSet[inputDataForType[i][selectType]]))
-                    {
-                    typeSet[inputDataForType[i][selectType]].push(inputDataForType[i][selectObj]);
+                    if (!(inputDataForType[i][selectObj] in typeSet[inputDataForType[i][selectType]])) {
+                        typeSet[inputDataForType[i][selectType]].push(inputDataForType[i][selectObj]);
                     }
                 }
             }
             return typeSet;
-
         }
-        var srcObjByType = getObjByType(inputData,"srcType","srcObj");
-        //console.log("srcObjByType " +JSON.stringify(srcObjByType));
-
+        var srcObjByType = getObjByType(inputData, "srcType", "srcObj");
         function getBarGraphData(inputDataForBarGraph, selectType) {
             var typeSet = {};
             for (var i = 0; i < inputDataForBarGraph.length; i++) {
-
                 if (!(inputDataForBarGraph[i][selectType] in typeSet)) {
                     if (inputDataForBarGraph[i][selectType] === undefined) {
                         inputDataForBarGraph[i][selectType] = "TypeNotDefined";
                     }
                     typeSet[inputDataForBarGraph[i][selectType]] = [inputDataForBarGraph[i]["traffic"], 1, inputDataForBarGraph[i]["traffic"], inputDataForBarGraph[i]["packets"], 1, inputDataForBarGraph[i]["packets"]];
-
                 }
                 else {
                     var currentTotal = typeSet[inputDataForBarGraph[i][selectType]][0]
@@ -152,7 +144,6 @@
                 var data = [];
                 for (var key in barGraphDataPara) {
                     if (barGraphDataPara.hasOwnProperty(key)) {
-                        //console.log(key + " -> " + NetworkFlow[key]);
                         var dataBuffer = {
                             "type": key,
                             "avgTraffic": barGraphDataPara[key][2]
@@ -167,7 +158,6 @@
                 var data = [];
                 for (var key in barGraphDataPara) {
                     if (barGraphDataPara.hasOwnProperty(key)) {
-                        //console.log(key + " -> " + NetworkFlow[key]);
                         var dataBuffer = {
                             "type": key,
                             "avgTraffic": barGraphDataPara[key][5]
@@ -180,7 +170,6 @@
         }
         var barGraphData = generateBarGraphData(rawBarGraphData, 1);
         createBarGraph(barGraphData);
-        console.log("trafficAndPacketArray" + JSON.stringify(rawBarGraphData));
         var trafficRange = (trafficMax - trafficMin) / 4;
         var packetsRange = (packetMax - packetMin) / 4;
         var trafficRange1UpperLimit = trafficRange;
@@ -189,14 +178,11 @@
         var packetsRange1UpperLimit = packetsRange;
         var packetsRange2UpperLimit = packetsRange * 2;
         var packetsRange3UpperLimit = packetsRange * 3;
-
-        //console.log("trafficRange " + trafficRange1UpperLimit + "  " + trafficRange2UpperLimit + "  " + trafficRange3UpperLimit + "  " + trafficMax);
         function getNetworkFlow(para1, para2) {
             var NetworkFlowArray = {};
             for (var i = 0; i < inputData.length; i++) {
                 var flowDirection = inputData[i][para1] + "," + inputData[i][para2];
                 if (flowDirection in NetworkFlowArray) {
-                    //console.log("duplicate exhists " + flowDirection);
                     var sum = inputData[i]["traffic"];
                     sum = sum + NetworkFlowArray[flowDirection][0];
                     var packSum = inputData[i]["packets"];
@@ -216,14 +202,10 @@
         para2 = "destType";
         var NetworkFlowGraph2 = getNetworkFlow(para1, para2);
 
-        // console.log(JSON.stringify(NetworkFlow));
-        // console.log("length of NetworkFlow "+Object.keys(NetworkFlow).length);
-
         function generateGraphData(NetworkFlowPara) {
             var dataForBiParateChart = [];
             for (var key in NetworkFlowPara) {
                 if (NetworkFlowPara.hasOwnProperty(key)) {
-                    //console.log(key + " -> " + NetworkFlow[key]);
                     var NetworkFlowValues = NetworkFlowPara[key]
 
                     var trafficValue = NetworkFlowValues[0];
@@ -231,7 +213,6 @@
                     var KeySplitArray = key.split(',');
                     var sourceObject = KeySplitArray[0];
                     var DestinationObject = KeySplitArray[1];
-                    //console.log(sourceObject + " and " + DestinationObject);
                     dataForBiParateChart.push([sourceObject, DestinationObject, trafficValue, packetValue]);
                 }
             }
@@ -240,24 +221,19 @@
 
         var dataForGraph1 = generateGraphData(NetworkFlowGraph1);
         var dataForGraph2 = generateGraphData(NetworkFlowGraph2);
-        // console.log(JSON.stringify(dataForBiParateChart));
-
         function generateNetworkGraph(NetworkGraphPara, objectList) {
-            
-             var filterObj = [];
-             for(var i=0;i< objectList.length;i++){
-                // console.log(objectList[i] );
-                 if(!(filterObj.includes(objectList[i]))){
-              
-                     filterObj.push(objectList[i] )
-                 }
-             }
-             //console.log("generateNetworkGraph  "+JSON.stringify(filterObj));
+            console.log(JSON.stringify(objectList))
+            var filterObj = [];
+            for (var i = 0; i < objectList.length; i++) {
+                if (!(filterObj.includes(objectList[i]))) {
+
+                    filterObj.push(objectList[i])
+                }
+            }
             var networkGraph = [];
-            
+
             for (var key in NetworkGraphPara) {
                 if (NetworkGraphPara.hasOwnProperty(key)) {
-                    //console.log(key + " -> " + NetworkFlow[key]);
                     var NetworkFlowValues = NetworkGraphPara[key]
                     var trafficValue = NetworkFlowValues[0];
                     var packetValue = NetworkFlowValues[1];
@@ -293,10 +269,7 @@
                     var KeySplitArray = key.split(',');
                     var sourceObject = KeySplitArray[0];
                     var DestinationObject = KeySplitArray[1];
-                    //console.log(sourceObject + " and " + DestinationObject);
-
                     if (filterObj.includes(sourceObject) && filterObj.includes(DestinationObject)) {
-                        //  console.log(filterObj);
                         var NodeData = {
                             source: sourceObject,
                             target: DestinationObject,
@@ -305,16 +278,10 @@
                         if (NodeData.source)
                             networkGraph.push(NodeData);
                     }
-                    // networkGraph.push([sourceObject, DestinationObject, trafficStatus, packetStatus]);
                 }
             }
             return networkGraph;
         }
-
-        //var dataForNetworkGraph = generateNetworkGraph(NetworkFlowGraphBaseCase);
-        //console.log(JSON.stringify(dataForNetworkGraph));
-
-
         function getRandomColor() {
             var letters = '0123456789ABCDEF'.split('');
             var color = '#';
@@ -324,47 +291,40 @@
             return color;
         }
         var data = dataForGraph1;
-        //var color ={obj1:"#3366CC", obj2:"#DC3912",  obj2:"#FF9900", obj3:"#109618", obj5:"#990099", obj6:"#0099C6"};
         var colorsForBiparate = {};
         for (var i = 0; i < data.length; i++) {
-            //  console.log(data[i][0]);
             var keyForColor = data[i][0];
             if (!(keyForColor in colorsForBiparate)) {
-                //colorsForBiparate[keyForColor] = Colors.random()["rgb"];
                 colorsForBiparate[keyForColor] = getRandomColor();
             }
         }
-        // console.log(JSON.stringify(colorsForBiparate))
-
-
-
-
         var rad = document.valueInputForm.optradio;
         var prev = null;
+        
+        $("#bipartHeading").html(" Network Traffic")
         for (var i = 0; i < rad.length; i++) {
             rad[i].onclick = function () {
                 (prev) ? console.log(prev.value) : null;
                 if (this !== prev) {
                     prev = this;
                 }
-                //console.log(this.value)
                 d3.select("#chart").select("svg").remove();
-
+                if(+this.value == 2){
+                    $("#bipartHeading").html(" Packet Traffic")
+                }
+                else{
+                    $("#bipartHeading").html(" Network Traffic")
+                }
                 createGraph(dataForGraph1, dataForGraph2, (+this.value) + 1);
                 d3.select("#chart2").select("svg").remove();
                 var barGraphData = generateBarGraphData(rawBarGraphData, (+this.value));
                 createBarGraph(barGraphData);
-                // alert(this.value);
             };
         }
-        var rad = document.valueInputForm.optradio2;
-        var prev = null;
-
-
         function createGraph(dataForGraph1, dataForGraph2, dataIndex) {
-            var svg = d3.select("#chart").append("svg").attr("width", 960).attr("height", 800);
+            var svg = d3.select("#chart").append("svg").attr("width", 1160).attr("height", 800);
             var g = [svg.append("g").attr("transform", "translate(150,100)")
-                , svg.append("g").attr("transform", "translate(650,100)")];
+                , svg.append("g").attr("transform", "translate(750,100)")];
             var bp = [viz.bP()
                 .data(dataForGraph1)
                 .min(12)
@@ -388,8 +348,8 @@
             [0, 1].forEach(function (i) {
                 g[i].call(bp[i])
 
-                g[i].append("text").attr("x", -50).attr("y", -8).style("text-anchor", "middle").text("source");
-                
+                g[i].append("text").attr("x", -50).attr("y", -8).style("text-anchor", "middle").text(setBpGraphLable);
+
 
                 g[i].append("line").attr("x1", -100).attr("x2", 0);
                 g[i].append("line").attr("x1", 200).attr("x2", 300);
@@ -434,196 +394,139 @@
             d3.select(self.frameElement).style("height", "800px");
 
         }
-        // end
         createGraph(dataForGraph1, dataForGraph2, 2);
 
 
         $(document).ready(function () {
+
+            function pullDataForNetworkGraph() {
+                var selectedObj = [];
+                var selectedTypes = $('#MultiSelectRadio').val();
+                for (var i = 0; i < selectedTypes.length; i++) {
+                    var result = srcObjByType[selectedTypes[i]];
+                    for (var j = 0; j < result.length; j++) {
+                        selectedObj.push(result[j]);
+                    }
+                }
+
+                var dataForNetworkGraph = generateNetworkGraph(NetworkFlowGraphBaseCase, selectedObj);
+                d3v3.select("#chart3").select("svg").remove();
+                drawNetworkGraph(dataForNetworkGraph);
+            }
             var typeArray = [];
             for (var key in srcObjByType) {
                 if (srcObjByType.hasOwnProperty(key)) {
                     typeArray.push(key);
                 }
             }
-                        //console.log(key + " -> " + NetworkFlow[key]);
-          
+
             var htmlString;
             for (var i = 0; i < typeArray.length; i++) {
                 htmlString += "<option value=\"" + typeArray[i] + "\">" + typeArray[i] + "</option>";
             }
             $("#MultiSelectRadio").html(htmlString);
-
+            $("#MultiSelectRadio").val(typeArray[0]);
             $('#MultiSelectRadio').multiselect();
+
+            pullDataForNetworkGraph();
+
             $('#MultiSelectRadio').on("change", function () {
-                 var selectedObj = [];
-                //console.log($('#MultiSelectRadio').val());
-                var selectedTypes = $('#MultiSelectRadio').val();
-                //console.log(selectedTypes);
-               
-                for(var i =0;i< selectedTypes.length;i++){
-                        var result = srcObjByType[selectedTypes[i]];
-                        for(var j=0;j<result.length;j++){
-                            selectedObj.push(result[j]);
-                        
-                        }
-                }
-                console.log("genrela  "+JSON.stringify(selectedObj));
-                var dataForNetworkGraph = generateNetworkGraph(NetworkFlowGraphBaseCase,selectedObj);
-                d3v3.select("#chart3").select("svg").remove();
-                drawNetworkGraph(dataForNetworkGraph);
-                //console.log(JSON.stringify(dataForNetworkGraph));
+                pullDataForNetworkGraph();
             });
 
 
         });
-        // startAgain
+        function drawNetworkGraph(dataForNetworkGraph) {
+            var links = dataForNetworkGraph;
+            var nodes = {};
+            links.forEach(function (link) {
+                link.source = nodes[link.source] || (nodes[link.source] = { name: link.source });
+                link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
+            });
 
-        function drawNetworkGraph(dataForNetworkGraph){
-        var links = dataForNetworkGraph;
+            var width = 660,
+                height = 450;
 
-        var nodes = {};
+            var force = d3v3.layout.force()
+                .nodes(d3v3.values(nodes))
+                .links(links)
+                .size([width, height])
+                .linkDistance(180)
+                .charge(-25)
+                .on("tick", tick)
+                .start();
 
-        // Compute the distinct nodes from the links.
-        links.forEach(function (link) {
-            link.source = nodes[link.source] || (nodes[link.source] = { name: link.source });
-            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
-        });
+            var svg = d3v3.select("#chart3").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            svg.append("defs").selectAll("marker")
+                .data(["low", "medium", "mediumhigh", "high"])
+                .enter().append("marker")
+                .attr("id", function (d) { return d; })
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 15)
+                .attr("refY", -1.5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5");
 
-        var width = 660,
-            height = 450;
+            var path = svg.append("g").selectAll("path")
+                .data(force.links())
+                .enter().append("path")
+                .attr("class", function (d) { return "link " + d.type; })
+                .attr("marker-end", function (d) { return "url(#" + d.type + ")"; });
 
-        var force = d3v3.layout.force()
-            .nodes(d3v3.values(nodes))
-            .links(links)
-            .size([width, height])
-            .linkDistance(380)
-            .charge(-60)
-            .on("tick", tick)
-            .start();
+            var circle = svg.append("g").selectAll("circle")
+                .data(force.nodes())
+                .enter().append("circle")
+                .attr("r", 6)
+                .call(force.drag);
 
-        var svg = d3v3.select("#chart3").append("svg")
-            .attr("width", width)
-            .attr("height", height);
+            var text = svg.append("g").selectAll("text")
+                .data(force.nodes())
+                .enter().append("text")
+                .attr("x", 15)
+                .attr("y", ".100em")
+                .text(function (d) { return d.name; });
 
-        // Per-type markers, as they don't inherit styles.
-        svg.append("defs").selectAll("marker")
-            .data(["low", "medium", "mediumhigh", "high"])
-            .enter().append("marker")
-            .attr("id", function (d) { return d; })
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 15)
-            .attr("refY", -1.5)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", "auto")
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5");
+            function tick() {
+                path.attr("d", linkArc);
+                circle.attr("transform", transform);
+                text.attr("transform", transform);
+            }
 
-        var path = svg.append("g").selectAll("path")
-            .data(force.links())
-            .enter().append("path")
-            .attr("class", function (d) { return "link " + d.type; })
-            .attr("marker-end", function (d) { return "url(#" + d.type + ")"; });
+            function linkArc(d) {
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
+                    dr = Math.sqrt(dx * dx + dy * dy);
+                return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+            }
 
-        var circle = svg.append("g").selectAll("circle")
-            .data(force.nodes())
-            .enter().append("circle")
-            .attr("r", 6)
-            .call(force.drag);
-
-        var text = svg.append("g").selectAll("text")
-            .data(force.nodes())
-            .enter().append("text")
-            .attr("x", 25)
-            .attr("y", ".100em")
-            .text(function (d) { return d.name; });
-
-        function tick() {
-            path.attr("d", linkArc);
-            circle.attr("transform", transform);
-            text.attr("transform", transform);
+            function transform(d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            }
         }
-
-        function linkArc(d) {
-            var dx = d.target.x - d.source.x,
-                dy = d.target.y - d.source.y,
-                dr = Math.sqrt(dx * dx + dy * dy);
-            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-        }
-
-        function transform(d) {
-            return "translate(" + d.x + "," + d.y + ")";
-    } 
-
-
-
-    }
         function createBarGraph(barGraphData) {
 
-
-
-            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
-                width = 400 - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
-
-            console.log("x " + width + "  y  " + height);
-            // set the ranges
-            var x = d3v3.scale.linear().range([0, width], .05);
-
-            var y = d3v3.scale.linear().range([height, 0]);
-            console.log("x " + x + "  y  " + y);
-            // define the axis
-            var xAxis = d3v3.svg.axis()
-                .scale(x)
-                .orient("bottom")
-
-
-            var yAxis = d3v3.svg.axis()
-                .scale(y)
-                .orient("left")
-                .ticks(10);
-
-
-            // add the SVG element
-            var svg = d3v3.select("body").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
-
-
-            // load the data
             var data = barGraphData;
-            // scale the range of the data
-            //.domain(barGraphData.map(function(d) { return d.type; }));
             var margin = { top: 20, right: 20, bottom: 30, left: 40 },
                 width = 550 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
-
-            // set the ranges
             var x = d3.scaleBand()
                 .range([0, width])
                 .padding(0.1);
             var y = d3.scaleLinear()
                 .range([height, 0]);
-
-            // append the svg object to the body of the page
-            // append a 'group' element to 'svg'
-            // moves the 'group' element to the top left margin
             var svg = d3.select("#chart2").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
-
-
-            // Scale the range of the data in the domains
             x.domain(data.map(function (d) { return d.type; }));
             y.domain([0, d3.max(data, function (d) { return d.avgTraffic; })]);
-
-            // append the rectangles for the bar chart
             svg.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
@@ -632,13 +535,9 @@
                 .attr("width", x.bandwidth())
                 .attr("y", function (d) { return y(d.avgTraffic); })
                 .attr("height", function (d) { return height - y(d.avgTraffic); });
-
-            // add the x Axis
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
-
-            // add the y Axis
             svg.append("g")
                 .call(d3.axisLeft(y));
 
@@ -648,55 +547,48 @@
                 (height + margin.top + 10) + ")")
                 .style("text-anchor", "middle", "bolder")
                 .text(" SOURCE TYPE ");
-            /* svg.append("text")
-                 .attr("transform", "rotate(-90)")
-                 .attr("y", 0 - margin.left - 2)
-                 .attr("x",20 - (height / 2))
-                 .attr("dy", "1em")
-                 .style("text-anchor", "middle","bolder")
-                 .text("Traffic"); */
         }
-        // end3
-
-
     }
-    $(df2).on({
-        "stateFetchingSuccess": function (event, data) {
+    var setBpGraphLable = " Source Object " ;
+    function url2() {
+        $(df2).on({
+            "stateFetchingSuccess": function (event, data) {
 
-            data.result.data.forEach(function (dataEntry) {
-            });
-            // start
-            var para1 = "srcObj";
-            var para2 = "destObj";
-            triggerGraphs(data, para1);
-            jQuery("#action-1").click(function (e) {
-                d3.select("#chart").select("svg").remove();
-                d3v3.select("#chart2").select("svg").remove();
-                para1 = "srcObj";
-                para2 = "destObj";
+                data.result.data.forEach(function (dataEntry) {
+                });
+                var para1 = "srcObj";
+                var para2 = "destObj";
                 triggerGraphs(data, para1);
-                e.preventDefault();
-            });
-            jQuery("#action-2").click(function (e) {
-                d3.select("#chart").select("svg").remove();
-                d3v3.select("#chart2").select("svg").remove();
-                para1 = "srcType";
-                para2 = "destObj";
-                triggerGraphs(data, para1);
-                e.preventDefault();
-            });
+                jQuery("#action-1").click(function (e) {
+                    d3.select("#chart").select("svg").remove();
+                    d3v3.select("#chart2").select("svg").remove();
+                    para1 = "srcObj";
+                    para2 = "destObj";
+                    setBpGraphLable = " Source Object "
+                    triggerGraphs(data, para1);
+                    e.preventDefault();
+                });
+                jQuery("#action-2").click(function (e) {
+                    d3.select("#chart").select("svg").remove();
+                    d3v3.select("#chart2").select("svg").remove();
+                    para1 = "srcType";
+                    para2 = "destObj";
+                    setBpGraphLable = " Source Type "
+                    triggerGraphs(data, para1);
+                    e.preventDefault();
+                });
+            },
+            "stateFetchingFailure": function (event, data) {
+                addNewEntry($trafficStatusList, JSON.stringify(data.error));
+                addNewEntry($trafficStatusList, "Hit a snag. Retry after 1 sec...");
+                setTimeout(function () {
+                    $trafficStatusList.html("");
+                    df2.repeatOnce();
+                }, 1000);
+            }
+        });
 
-
-        },
-        "stateFetchingFailure": function (event, data) {
-            addNewEntry($trafficStatusList, JSON.stringify(data.error));
-            addNewEntry($trafficStatusList, "Hit a snag. Retry after 1 sec...");
-            setTimeout(function () {
-                $trafficStatusList.html("");
-                df2.repeatOnce();
-            }, 1000);
-        }
-    });
-
-    df2.start();
+        df2.start();
+    }
+    url2();
 })();
