@@ -54,6 +54,9 @@ html, body {
 }
 
 
+svg{
+    margin-top: -300;
+}
 text{
 font-size:12px;
 }
@@ -77,4 +80,58 @@ font-size:12px;
 }
 line{
 	stroke:grey;
+}
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 2.5px;
+}
+
+#low {
+  fill: mediumseagreen;
+}
+
+.link.low {
+  stroke: mediumseagreen;
+}
+#high {
+  fill: darkred;
+}
+
+.link.high {
+  stroke: darkred;
+}
+#medium {
+  fill: deepskyblue;
+}
+.link.medium {
+  stroke: deepskyblue;
+}
+#mediumhigh {
+  fill: yellow;
+}
+
+.link.mediumhigh {
+  stroke: yellow;
+}
+
+.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 4.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+.col-sm-1{
+    padding: 0px !important;
 }
