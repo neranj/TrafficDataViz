@@ -45,15 +45,15 @@
         <div class="row content">
 
             <div class="col-sm-12">
-                <h1>Network Traffic flow</h1>
-                <p>The below graph represent the Traffic flow between source object and destination object. The values on the
-                    right represent the traffic and the percentage reresent the contribution of the traffic to the overall
-                    traffic at that moment</p>
+                <h1>Traffic Status visualization </h1>
+                <p class ="para">The webpage Extensively Visualizes the traffic status with interesting graphs and charts. Each of the graphs Intuitively explains the interpretations and analysis which can be derived from the traffic data.</p>
                 <hr>
             </div>
             <div class="row content">
-                <h3>Chart</h3>
-
+                <h3> Source To Destination Flow of Network Traffic/Packets </h3>
+                <p class ="para">The below graph gives an holistic picture of the Network Traffic. First Graph represents how the source objects and destination objects are distributed( represented via percentage) among the total traffic. The second graph represents on a whole how the source objects and destination type are distributed among the total traffic.When you hover over a source object in the first graph you can see the flow of data from the selected source to its multiple destination sources. There is an percentage distribution based on the total traffic each destination object receives. The visualization in the second graph represents the percentage distribution of the destination type for the selected Source Object.</p>
+                
+                <hr>
                 <form name="valueInputForm">
                     <label class="radio-inline">
         <input type="radio" name="optradio" value=1>Traffic
@@ -80,20 +80,25 @@
             </div>
 
         </div>
+        
         <div class="row content">
 
             <div class="col-sm-5">
-                
                 <div id="chart2">
                     <h4>
                         <bold id="chart2Name">
                     </h4>
                     </bold>
+                    <p class ="para">The Bar Chart represents the type of source which produces more traffic. By choosing the radio button to packets, you can see which type of source produces more packets.</p>
+                
                 </div>
             </div>
             <div class="col-sm-7">
  <h4> Network Flow Graph </h4>
- <br>
+ 
+ <p class ="para"> Network graph enables User to choose the Type of objects he wants to analyse. The source and destination objects are restricted to the type chosen.
+ The edges are color coded based on the Traffic. Interesting inferences can be derived. For instance, a possibility of network bottleneck can be detected if there are multiple red or orange edges towards a node but there is only  green edges going outwards, which means less traffic is going outwards.</p>
+</br>
  <ul class="legend">
     <li><span class="greenLegend"></span> Less Traffic Flow              </li>
     <li><span class="blueLegend"></span> Medium Traffic Flow            </li>

@@ -2,7 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .demoContainer {
@@ -151,3 +151,7 @@ circle {
 .legend .blueLegend { background-color: blue; }
 .legend .oragneLegend { background-color: darkorange; }
 .legend .greenLegend { background-color: green; }
+.para{
+    padding-left: 1% !important;
+    padding-right: 1% !important;
+}

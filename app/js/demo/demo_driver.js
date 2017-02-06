@@ -53,10 +53,12 @@
 
     var $trafficStatusList = $("#mockTrafficStat"),
         df2 = new DataFetcher(function () {
-            // return "/traffic_status/frozen";
-            return "/traffic_status";
+             return "/traffic_status/frozen";
+            //return "/traffic_status";
             //codingArea
         });
+
+
     function triggerGraphs(data, sorceType) {
         var resul = data["result"];
         var inputData = resul["data"];
@@ -387,7 +389,7 @@
                 g[i].call(bp[i])
 
                 g[i].append("text").attr("x", -50).attr("y", -8).style("text-anchor", "middle").text("source");
-                g[i].append("text").attr("x", 250).attr("y", -8).style("text-anchor", "middle").text("destination");
+                
 
                 g[i].append("line").attr("x1", -100).attr("x2", 0);
                 g[i].append("line").attr("x1", 200).attr("x2", 300);
@@ -411,8 +413,8 @@
                     .text(function (d) { return d3.format("0.0%")(d.percent) })
                     .attr("text-anchor", d => (d.part == "primary" ? "end" : "start"));
             });
-
-
+            g[0].append("text").attr("x", 250).attr("y", -8).style("text-anchor", "middle").text("Destination Object");
+            g[1].append("text").attr("x", 250).attr("y", -8).style("text-anchor", "middle").text("Destination Type");
             function mouseover(d) {
                 [0, 1].forEach(function (i) {
                     bp[i].mouseover(d);
@@ -487,15 +489,15 @@
             link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
         });
 
-        var width = 960,
-            height = 900;
+        var width = 660,
+            height = 450;
 
         var force = d3v3.layout.force()
             .nodes(d3v3.values(nodes))
             .links(links)
             .size([width, height])
             .linkDistance(380)
-            .charge(-30)
+            .charge(-60)
             .on("tick", tick)
             .start();
 
@@ -532,11 +534,10 @@
         var text = svg.append("g").selectAll("text")
             .data(force.nodes())
             .enter().append("text")
-            .attr("x", 8)
-            .attr("y", ".31em")
+            .attr("x", 25)
+            .attr("y", ".100em")
             .text(function (d) { return d.name; });
 
-        // Use elliptical arc path segments to doubly-encode directionality.
         function tick() {
             path.attr("d", linkArc);
             circle.attr("transform", transform);
@@ -557,111 +558,6 @@
 
 
     }
-        //EndAgain
-        //startAgainAgain
-        //var data = [[5,3], [10,17], [15,4], [2,8]];
-        /*       
-       function pearsonCorrelation(prefs, p1, p2) {
-         var si = [];
-       
-         for (var key in prefs[p1]) {
-           if (prefs[p2][key]) si.push(key);
-         }
-       
-         var n = si.length;
-       
-         if (n == 0) return 0;
-       
-         var sum1 = 0;
-         for (var i = 0; i < si.length; i++) sum1 += prefs[p1][si[i]];
-       
-         var sum2 = 0;
-         for (var i = 0; i < si.length; i++) sum2 += prefs[p2][si[i]];
-       
-         var sum1Sq = 0;
-         for (var i = 0; i < si.length; i++) {
-           sum1Sq += Math.pow(prefs[p1][si[i]], 2);
-         }
-       
-         var sum2Sq = 0;
-         for (var i = 0; i < si.length; i++) {
-           sum2Sq += Math.pow(prefs[p2][si[i]], 2);
-         }
-       
-         var pSum = 0;
-         for (var i = 0; i < si.length; i++) {
-           pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
-         }
-       
-         var num = pSum - (sum1 * sum2 / n);
-         var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n) *
-             (sum2Sq - Math.pow(sum2, 2) / n));
-       
-         if (den == 0) return 0;
-       
-         return num / den;
-       }
-       var dataforCorrelation = new Array(
-           trafficArray, packetArray
-       );
-       console.log("pearsonCorrelation "+pearsonCorrelation(dataforCorrelation,0,1))
-          var data = trafficAndPacketArray;
-           var margin = {top: 20, right: 15, bottom: 60, left: 60}
-             , width = 560 - margin.left - margin.right
-             , height = 400 - margin.top - margin.bottom;
-           
-           var x = d3v3.scale.linear()
-                     .domain([0, d3v3.max(data, function(d) { return d[0]; })])
-                     .range([ 0, width ]);
-           
-           var y = d3v3.scale.linear()
-                     .domain([0, d3v3.max(data, function(d) { return d[1]; })])
-                     .range([ height, 0 ]);
-        
-           var chart = d3v3.select('#chart2')
-           .append('svg:svg')
-           .attr('width', width + margin.right + margin.left)
-           .attr('height', height + margin.top + margin.bottom)
-           .attr('class', 'chart')
-       
-           var main = chart.append('g')
-           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-           .attr('width', width)
-           .attr('height', height)
-           .attr('class', 'main')   
-               
-           // draw the x axis
-           var xAxis = d3v3.svg.axis()
-           .scale(x)
-           .orient('bottom');
-       
-           main.append('g')
-           .attr('transform', 'translate(0,' + height + ')')
-           .attr('class', 'main axis date')
-           .call(xAxis);
-       
-           // draw the y axis
-           var yAxis = d3v3.svg.axis()
-           .scale(y)
-           .orient('left');
-       
-           main.append('g')
-           .attr('transform', 'translate(0,0)')
-           .attr('class', 'main axis date')
-           .call(yAxis);
-       
-           var g = main.append("svg:g"); 
-           
-           g.selectAll("scatter-dots")
-             .data(data)
-             .enter().append("svg:circle")
-                 .attr("cx", function (d,i) { return x(d[0]); } )
-                 .attr("cy", function (d) { return y(d[1]); } )
-                 .attr("r", 8);
-               //EndAgainAgain
-               */
-
-        // start3
         function createBarGraph(barGraphData) {
 
 
