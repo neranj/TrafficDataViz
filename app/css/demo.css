@@ -142,7 +142,7 @@ circle {
 .bar { fill: steelblue; }
 
 .legend { list-style: none; }
-.legend li { float: left;margin-right: 10px;  }
+.legend li { float: left;margin-right: 30px  }
 .legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
 /* your colors */
 .legend .redLegend { background-color: darkred; }
@@ -162,4 +162,8 @@ em {font-weight:bold; font-style:normal;font-size: 20px}
     text-align: center !important;
     float:center !important;
     font-weight:bold; font-style:normal;font-size: 20px
+}
+#valueInputFormChoose{
+    float:right;
+    font-size: 1% !important;
 }

@@ -33,38 +33,54 @@
 
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
+        <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            
-      </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">                  </button>
+                   
                 <a class="navbar-brand" href="#">Juniper Network Traffic Analysis</a>
             </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+
+      </div>
+
         </div>
     </nav>
     <div class="container-fluid text-center">
-        <div class="row content">
 
+        
+                    
+        <div class="row content">
+                               <form name="valueInputForm1" id="valueInputFormChoose">
+                        <label class="radio-inline">
+                            <input type="radio" name="optradioChoose" value=1 checked="checked"> <em>/traffic_status</em>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="optradioChoose" value=2><em>/traffic_status/frozen</em>
+                        </label>
+                    </form>
             <div class="col-sm-12">
-                <h1>Traffic Status visualization </h1>
-                <p class="para">The webpage Extensively Visualizes the traffic status with interesting graphs and charts. Each of the graphs
-                    Intuitively explains the interpretations and analysis which can be derived from the traffic data.</p>
+
+                <h1>Traffic Status Visualization </h1>
+            
+                <p class="para">The webpage extensively visualizes the traffic status with interesting graphs and charts. Each of the graphs
+                    intuitively explains the interpretations and analysis which can be derived from the traffic data.</p>
                 <hr>
             </div>
             <div class="row content">
+                           <div class="col-sm-12">
                 <h3> Source To Destination Flow of Network Traffic/Packets </h3>
-                <p class="para">The below graph gives an holistic picture of the Network Traffic. First Graph represents how the source objects
-                    and destination objects are distributed( represented via percentage) among the total traffic. The second
+                <p class="para">The below graph gives an holistic picture of the Network traffic. First graph represents how the source objects
+                    and destination objects are distributed(represented via percentage) among the total traffic. The second
                     graph represents on a whole how the source objects and destination type are distributed among the total
                     traffic.When you hover over a source object in the first graph you can see the flow of data from the
                     selected source to its multiple destination sources. There is an percentage distribution based on the
-                    total traffic each destination object receives. The visualization in the second graph represents the
-                    percentage distribution of the destination type for the selected Source Object.</p>
+                    total traffic which each destination object receives. The visualization in the second graph represents the
+                    percentage distribution of the destination type for the selected source object.</p>
 
                 <hr>
 
      
-                <div class="col-sm-12">
+     
                    
                                         <div class="btn-group">
                         <button class="btn dropdown-toggle" data-toggle="dropdown">Choose Form of Source <span class="caret"></span></button>
@@ -103,24 +119,24 @@
                         <bold id="chart2Name"> </bold>
                     </h4>
                    
-                    <p class="para">The Bar Chart represents the type of source which produces more traffic. To view Packets Vs Source Type choose packets in the Radio button</p>
+                    <p class="para">The bar chart represents the type of source which produces more traffic. To view Packets Vs Source Type choose packets in the Radio button</p>
 
                 </div>
             </div>
             <div class="col-sm-7">
                 <h4> Network Flow Graph </h4>
 
-                <p class="para"> Network graph enables User to choose the Type of objects he wants to analyse. The source and destination
+                <p class="para"> Network graph enables the user to choose the type of objects he wants to analyze. The source and destination
                     objects are restricted to the type chosen. The edges are color coded based on the Traffic. Interesting
                     inferences can be derived. For instance, a possibility of network bottleneck can be detected if there
                     are multiple red or orange edges towards a node but there is only green edges going outwards, which means
                     less traffic is going outwards.</p>
                 </br>
                 <ul class="legend">
-                    <li><span class="greenLegend"></span> Less Traffic Flow </li>
-                    <li><span class="blueLegend"></span> Medium Traffic Flow </li>
-                    <li><span class="oragneLegend"></span> Medium High Traffic Flow </li>
-                    <li><span class="redLegend"></span> High Traffic Flow </li>
+                    <li><span id="greenLegendId" class="greenLegend" ></span> Less Traffic Flow </li>
+                    <li><span id="BlueLegendId" class="blueLegend"></span> Medium Traffic Flow  </li>
+                    <li><span id="OrangeLegendId" class="oragneLegend"></span> Medium High Traffic Flow </li>
+                    <li><span id="RedLegendId" class="redLegend"></span> High Traffic Flow  </li>
                 </ul>
                 <select id="MultiSelectRadio" multiple="multiple"> </select>
 

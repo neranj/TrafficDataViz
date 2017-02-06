@@ -54,7 +54,7 @@
     var $trafficStatusList = $("#mockTrafficStat");
     function urlCall(url) {
         return new DataFetcher(function () {
-            return "/traffic_status/frozen";
+            return url;
             //return "/traffic_status";
         });
     }
@@ -591,4 +591,33 @@
         df2.start();
     }
     url2();
+    var radChoose = document.valueInputForm1.optradioChoose;
+    var prev = null;
+        for (var i = 0; i < radChoose.length; i++) {
+            radChoose[i].onclick = function () {
+                (prev) ? console.log(prev.value) : null;
+                if (this !== prev) {
+                    prev = this;
+                }
+                if(+this.value == 2){
+                d3.select("#chart").select("svg").remove();
+                d3.select("#chart2").select("svg").remove();
+                d3v3.select("#chart3").select("svg").remove();
+                df2 = urlCall("/traffic_status/frozen");
+                url2();
+                }
+                else{
+                d3.select("#chart").select("svg").remove();
+                d3.select("#chart2").select("svg").remove();
+                d3v3.select("#chart3").select("svg").remove();
+                df2 = urlCall("/traffic_status");
+                url2();
+                }
+            };
+        }
+              /*  $('#traffic_status_frozen').on("click", function () {
+                df2 = urlCall("/traffic_status/frozen");
+                url2();
+            });*/
+
 })();
